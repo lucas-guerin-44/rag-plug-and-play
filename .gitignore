@@ -1,2 +1,5 @@
 .env
 /venv
+/embeddings
+faiss_index
+faiss_index_meta.pkl
