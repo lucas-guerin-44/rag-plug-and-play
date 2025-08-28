@@ -8,10 +8,9 @@ def answer_question(question: str, top_k=10) -> str:
     context = "\n".join([r["text"] for r in results])
     
     prompt = f"""
-You are a precise Q&A system.
-Use ONLY the text in the context below to answer.
-DO NOT add any explanations, commentary, or references like "according to the context".
-If the answer is not present in the context, respond exactly: "I don't know based on the provided documents."
+You are a helpful Q&A assistant. Use the context below to answer the question. 
+You may summarize, rephrase, or combine information from the context. 
+Do not make up facts not in the documents, but you can give cautious inferences if reasonable.
 
 Context:
 {context}
