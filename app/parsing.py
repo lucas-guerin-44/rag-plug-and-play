@@ -1,6 +1,5 @@
 import pdfplumber
 import pandas as pd
-from typing import List
 
 def parse_txt(file_path: str) -> str:
     with open(file_path, "r", encoding="utf-8") as f:
@@ -17,6 +16,13 @@ def parse_csv(file_path: str) -> str:
     df = pd.read_csv(file_path)
     return df.to_csv(index=False)
 
+def parse_md(file_path: str) -> str:
+    with open(file_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    import re
+    text = re.sub(r"(```.*?```)|(`.*?`)|(\[.*?\]\(.*?\))", "", text, flags=re.DOTALL)
+    return text
+
 def parse_file(file_path: str) -> str:
     print(file_path)
     if file_path.endswith(".txt"):
@@ -25,5 +31,7 @@ def parse_file(file_path: str) -> str:
         return parse_pdf(file_path)
     elif file_path.endswith(".csv"):
         return parse_csv(file_path)
+    elif file_path.endswith(".md"):
+        return parse_md(file_path)
     else:
         raise ValueError(f"Unsupported file type: {file_path}")

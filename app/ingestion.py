@@ -5,7 +5,7 @@ from .embeddings import embed_chunks
 from .utils import chunk_text
 from .config import settings
 
-SUPPORTED_EXTENSIONS = (".txt", ".pdf", ".csv")
+SUPPORTED_EXTENSIONS = (".txt", ".pdf", ".csv", '.md')
 
 def ingest_local(folder_path: str):
     for file_name in os.listdir(folder_path):
