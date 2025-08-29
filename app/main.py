@@ -1,13 +1,13 @@
 import os
 import tempfile
-from typing import List
-from fastapi import FastAPI, UploadFile, File
+from typing import List, Optional
+from fastapi import FastAPI, UploadFile, File, Query
 from contextlib import asynccontextmanager
 
 from app.s3 import clear_all_from_s3, download_faiss_from_s3, list_docs_in_s3, upload_faiss_to_s3, upload_file_to_docs_s3
 from .types import QuestionRequest
 
-from .embeddings import embed_chunks, vector_db
+from .embeddings import embed_chunks, get_embedding, vector_db
 from .parsing import parse_file
 from .utils import chunk_text, maybe_download_faiss, maybe_upload_faiss, maybe_upload_file
 from .query import answer_question
@@ -64,11 +64,19 @@ async def ingest_file(files: List[UploadFile] = File(...)):
     return {"message": f"Ingested files: {', '.join(ingested_files)}"}
 
 @app.post("/query")
-def query_doc(request: QuestionRequest):
+def query_doc(request: QuestionRequest, file_name: Optional[str] = Query(None)):
     maybe_download_faiss()
     vector_db.load()
-    answer = answer_question(request.question)
-    return answer
+
+    q_emb = get_embedding(request.question)
+    results = vector_db.query(q_emb, top_k=10)
+
+    if file_name:
+        results = [r for r in results if r["file"] == file_name]
+
+    context = "\n".join([r["text"] for r in results])
+    answer = answer_question(request.question, context_override=context)
+    return {"answer": answer}
 
 @app.delete("/reset")
 def reset_all():

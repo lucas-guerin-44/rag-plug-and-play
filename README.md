@@ -10,10 +10,10 @@ A modular FastAPI application for ingesting documents, generating embeddings, an
 - **Querying**: Ask natural language questions and get answers grounded in document content.
 - **S3 Integration**: Optional storage for documents and FAISS index; controlled via AUTO_S3_SAVE.
 - **Reset & List**: Clear S3 buckets and list documents.
+- **Frontend Integration**: Simpler ingesting and querying 
 
 ## Potential Improvements
 1. List of parsed document
-2. Frontend integration for simpler querying
 
 ## Installation
 ```bash
@@ -26,7 +26,8 @@ pip install -r requirements.txt
 
 ## Running
 ```bash
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload   # backend
+streamlit run app/frontend.py   # frontend
 ```
 
 ## API Endpoints
