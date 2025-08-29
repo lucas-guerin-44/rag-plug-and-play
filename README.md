@@ -4,7 +4,7 @@ A modular FastAPI application for ingesting documents, generating embeddings, an
 
 ## Features
 
-- **File Ingestion**: Upload `.txt`, `.pdf`, `.csv` files locally or via S3.
+- **File Ingestion**: Upload `.txt`, `.pdf`, `.csv`, `.md` files locally or via S3.
 - **Embeddings**: Generate embeddings using sentence-transformers (`all-mpnet-base-v2`).
 - **Vector Database**: Store embeddings in FAISS with metadata for provenance.
 - **Querying**: Ask natural language questions and get answers grounded in document content.
